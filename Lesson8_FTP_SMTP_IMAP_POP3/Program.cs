@@ -15,8 +15,13 @@ public class Program
         // RequestSftpServer();
         // UploadFileSftpServer();
         // DownLoadSftpServer();
-        string email = "";
-        string password = "";
+
+        string email = "yusufbagirov2010@gmail.com";
+        string password = "ispddsadasdsadaidxmqcy";
+        // Pop3();
+        // Imap();
+
+        Smtp();
 
         void RequestSftpServer()
         {
@@ -86,27 +91,36 @@ public class Program
 
         void Pop3()
         {
-            var host = "pop.gmail.com";
-            var port = 995;
-
-            using var client = new Pop3Client();
-
-            client.Connect(host, port, SecureSocketOptions.SslOnConnect);
-            client.Authenticate(email, password);
-
-            int messageCount = client.GetMessageCount();
-            Console.WriteLine(messageCount);
-
-            for (int i = 0; i < messageCount; i++)
+            try
             {
-                var message = client.GetMessage(i);
+                var host = "pop.gmail.com";
+                var port = 995;
 
-                Console.WriteLine($"From: {message.From}");
-                Console.WriteLine($"Subject: {message.Subject}");
-                Console.WriteLine($"Body: {message.Body}");
+                using var client = new Pop3Client();
+
+                client.Connect(host, port, SecureSocketOptions.SslOnConnect);
+                client.Authenticate(email, password);
+
+                int messageCount = client.GetMessageCount();
+                Console.WriteLine(messageCount);
+
+                for (int i = 0; i < messageCount; i++)
+                {
+                    var message = client.GetMessage(i);
+
+                    Console.WriteLine($"From: {message.From}");
+                    Console.WriteLine($"Subject: {message.Subject}");
+                    Console.WriteLine($"Body: {message.Body}");
+                }
+
+                client.Disconnect(true);
             }
+            catch (Exception ex)
+            {
 
-            client.Disconnect(true);
+                throw;
+            }
+            
         }
 
         void Imap()
@@ -157,7 +171,7 @@ public class Program
             };
 
             message.From = new MailAddress(email);
-            message.To.Add(new MailAddress("kamran.stepit@gmail.com"));
+            message.To.Add(new MailAddress("kamranforstep@gmail.com"));
 
             client.Send(message);
         }
