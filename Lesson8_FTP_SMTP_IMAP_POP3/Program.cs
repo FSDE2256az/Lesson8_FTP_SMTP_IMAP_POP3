@@ -8,7 +8,9 @@ public class Program
     {
         // RequestSftpServer();
 
-        UploadFileSftpServer();
+        // UploadFileSftpServer();
+
+        DownLoadSftpServer();
 
         void RequestSftpServer()
         {
@@ -56,5 +58,24 @@ public class Program
             Console.WriteLine("Successfully sending file...");
         }
 
+        void DownLoadSftpServer()
+        {
+            var host = "eu-central-1.sftpcloud.io";
+            int port = 22;
+            var username = "8c43f3b237ad44dcb5938cbda70f2a12";
+            var password = "7kQGs6WCFu9tIt4yKFfR1lXDkG19WHb3";
+         
+            using var client = new SftpClient(host, port, username, password);
+            
+            string remoteFilePath = "Xayyam/Xayyam.txt";
+            
+            client.Connect();
+
+            using var output = File.Create("file.txt");
+
+            client.DownloadFile(remoteFilePath, output);
+
+            Console.WriteLine("Successfully dowload file...");
+        }
     }
 }
