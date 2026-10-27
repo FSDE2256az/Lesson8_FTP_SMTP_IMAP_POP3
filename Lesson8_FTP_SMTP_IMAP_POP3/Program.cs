@@ -6,8 +6,9 @@ public class Program
 {
     static void Main(string[] args)
     {
-        RequestSftpServer();
+        // RequestSftpServer();
 
+        UploadFileSftpServer();
 
         void RequestSftpServer()
         {
@@ -16,7 +17,7 @@ public class Program
             var username = "8c43f3b237ad44dcb5938cbda70f2a12";
             var password = "7kQGs6WCFu9tIt4yKFfR1lXDkG19WHb3";
 
-            using var client = new SftpClient(host, port,username,password);
+            using var client = new SftpClient(host, port, username, password);
 
 
             client.Connect();
@@ -30,7 +31,30 @@ public class Program
             }
         }
 
+        void UploadFileSftpServer()
+        {
+            var host = "eu-central-1.sftpcloud.io";
+            int port = 22;
+            var username = "8c43f3b237ad44dcb5938cbda70f2a12";
+            var password = "7kQGs6WCFu9tIt4yKFfR1lXDkG19WHb3";
 
-       
+            string localFilePath = "Xayyam.txt";
+            string remoteFilePath = "Xayyam/Xayyam.txt";
+
+            if (!File.Exists(localFilePath))
+                File.WriteAllText(localFilePath, "Xayyam dersde az saqqiz ceyne...");
+
+            using var client = new SftpClient(host, port, username, password);
+    
+            client.Connect();
+
+            using var fileSteam = new FileStream(localFilePath, FileMode.Open);
+
+            client.UploadFile(fileSteam, remoteFilePath);
+
+
+            Console.WriteLine("Successfully sending file...");
+        }
+
     }
 }
